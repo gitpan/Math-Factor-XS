@@ -1,8 +1,9 @@
 NAME
-    Math::Factor - Factorise numbers and calculate matching multiplications
+    Math::Factor::XS - Factorise numbers and calculate matching
+    multiplications
 
 SYNOPSIS
-     use Math::Factor ':all';
+     use Math::Factor::XS ':all';
 
      $number = 30107;
 
@@ -13,7 +14,8 @@ SYNOPSIS
      print "$number == $matches[0][0] * $matches[0][1]\n";
 
 DESCRIPTION
-    Math::Factor factorises numbers by applying modulo operator divisons.
+    Math::Factor::XS factorises numbers by applying modulo operator
+    divisons.
 
 FUNCTIONS
   factors

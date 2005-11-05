@@ -7,7 +7,7 @@ use base qw(Exporter);
 
 our (@subs, @EXPORT_OK, %EXPORT_TAGS, $VERSION);
 
-$VERSION = '0.30';
+$VERSION = '0.31';
 @subs = qw(factors matches);
 @EXPORT_OK = @subs;
 %EXPORT_TAGS = ('all' => [ @subs ]);
@@ -20,11 +20,11 @@ __END__
 
 =head1 NAME
 
-Math::Factor - Factorise numbers and calculate matching multiplications
+Math::Factor::XS - Factorise numbers and calculate matching multiplications
 
 =head1 SYNOPSIS
 
- use Math::Factor ':all';
+ use Math::Factor::XS ':all';
 
  $number = 30107;
 
@@ -36,7 +36,7 @@ Math::Factor - Factorise numbers and calculate matching multiplications
 
 =head1 DESCRIPTION
 
-Math::Factor factorises numbers by applying modulo operator divisons.
+Math::Factor::XS factorises numbers by applying modulo operator divisons.
 
 =head1 FUNCTIONS
 
