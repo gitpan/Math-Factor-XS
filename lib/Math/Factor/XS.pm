@@ -1,19 +1,19 @@
 package Math::Factor::XS;
 
-use 5.008007;
 use strict;
 use warnings;
 use base qw(Exporter);
 
-our (@subs, @EXPORT_OK, %EXPORT_TAGS, $VERSION);
-
-$VERSION = '0.31';
+our ($VERSION, @EXPORT_OK, %EXPORT_TAGS, $Skip_multiple, @subs);
+     
+$VERSION = '0.32';
 @subs = qw(factors matches);
 @EXPORT_OK = @subs;
 %EXPORT_TAGS = ('all' => [ @subs ]);
+$Skip_multiple = 0;
 
 require XSLoader;
-XSLoader::load('Math::Factor::XS', $VERSION);
+XSLoader::load(__PACKAGE__, $VERSION);
 
 1;
 __END__
@@ -84,7 +84,7 @@ C<:all - *()>
 
 =head1 AUTHOR
 
-Steven Schubiger, schubiger@cpan.org
+Steven Schubiger <schubiger@cpan.org>
 
 =head1 LICENSE
 

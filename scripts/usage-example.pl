@@ -5,12 +5,12 @@ use warnings;
 
 use Math::Factor::XS qw(factors matches);
 
-our (%form, $i, $matches, $ul);
+our ($Skip_multiple, $i, $matches, $ul, %form);
 
 #$Math::Factor::XS::Skip_multiple = 1;
-    
-my $number = 30107;
 
+my $number = 30107;
+    
 my @factors = factors($number);
 my @matches = matches($number, @factors);
 

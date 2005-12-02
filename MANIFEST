@@ -9,7 +9,7 @@ ppport.h
 README
 scripts/usage-example.pl
 t/00-load.t
-t/func.t
+t/calc_factors.t
 t/pod-coverage.t
 t/pod.t
 XS.xs
