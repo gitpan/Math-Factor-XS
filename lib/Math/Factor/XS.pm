@@ -6,7 +6,7 @@ use base qw(Exporter);
 
 our ($VERSION, @EXPORT_OK, %EXPORT_TAGS, $Skip_multiple, @subs);
      
-$VERSION = '0.32';
+$VERSION = '0.33';
 @subs = qw(factors matches);
 @EXPORT_OK = @subs;
 %EXPORT_TAGS = ('all' => [ @subs ]);
