@@ -1,5 +1,9 @@
 Revision history for Perl extension Math::Factor::XS.
 
+0.34 Tue Aug 14 18:40:38 CEST 2007
+
+ - Beautified documentation (added code tags where suitable).
+
 0.33 Sat Apr  1 16:47:21 CEST 2006
 
  - Changed Build.PL argument create_makefile_pl from 'passtrough'
@@ -65,3 +69,4 @@ Revision history for Perl extension Math::Factor::XS.
 0.01 2004/01/06
 
  - Initial version.
+Tue Aug 14 18:40:38 CEST 2007

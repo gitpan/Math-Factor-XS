@@ -6,7 +6,7 @@ use base qw(Exporter);
 
 our ($VERSION, @EXPORT_OK, %EXPORT_TAGS, $Skip_multiple, @subs);
      
-$VERSION = '0.33';
+$VERSION = '0.34';
 @subs = qw(factors matches);
 @EXPORT_OK = @subs;
 %EXPORT_TAGS = ('all' => [ @subs ]);
@@ -46,8 +46,7 @@ Factorises numbers.
 
  @factors = factors($number);
 
-$number will be entirely factorised and its factors will be saved within 
-the array @factors.
+C<$number> will be entirely factorised and its factors will be saved within C<@factors>.
 
 =head2 matches
 
@@ -55,13 +54,13 @@ Evaluates matching multiplications.
 
  @matches = matches($number, @factors);
 
-The factors within @factors will be multplicated against each other and results 
-that equal the number itself, will be saved to the two-multidimensional array @matches.
+The factors within C<@factors> will be multplicated against each other and results 
+that equal the number itself, will be saved to the two-multidimensional C<@matches>.
 The matches are accessible through the indexes, for example, the first two numbers
-that matched the number, may be accessed by $matches[0][0] and $matches[0][1], 
-the second ones by $matches[1][0] and $matches[1][1], and so on.
+that matched the number, may be accessed by C<$matches[0][0]> and C<$matches[0][1]>, 
+the second ones by C<$matches[1][0]> and C<$matches[1][1]>, and so on.
 
-If $Math::Factor::XS::Skip_multiple is set to a true value, matching multiplications 
+If C<$Math::Factor::XS::Skip_multiple> is set to a true value, matching multiplications 
 that contain multiplicated (small) factors will be dropped.
 
 Example: 
