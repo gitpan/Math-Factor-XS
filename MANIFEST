@@ -13,3 +13,5 @@ t/functions.t
 t/pod-coverage.t
 t/pod.t
 XS.xs
+META.json
+SIGNATURE    Added here by Module::Build

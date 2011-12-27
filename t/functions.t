@@ -5,7 +5,7 @@ use warnings;
 use boolean qw(true);
 
 use Math::Factor::XS ':all';
-use Test::More tests => 9;
+use Test::More tests => 31;
 
 {
     my $number = 30107;
@@ -46,4 +46,45 @@ use Test::More tests => 9;
     my @matches = matches($number, \@factors);
 
     ok(!@matches, "matches($number) - no factors provided");
+}
+
+{
+  foreach my $elem ([ 0, '' ],
+                    [ 1, '' ],
+                    [ 2, '2' ],
+                    [ 3, '3' ],
+                    [ 4, '2,2' ],
+                    [ 5, '5' ],
+                    [ 6, '2,3' ],
+                    [ 12, '2,2,3' ],
+                    [ 64, '2,2,2,2,2,2' ],
+                    [ 9, '3,3' ],
+                    [ 27, '3,3,3' ],
+                    [ 30, '2,3,5' ],
+                    [ 34, '2,17' ],
+                    [ 57, '3,19' ],
+
+                    # medium size input, loop to sqrt(57128471)=7558
+                    [ 114_256_942, '2,57128471' ],
+
+                    [ 105, '3,5,7' ],
+                    [ 2214143, '1487,1489' ],
+                   ) {
+    my ($number, $want) = @$elem;
+    my @factors = prime_factors($number);
+    my $got = join(',',@factors);
+    is ($got, $want, "prime_factors($number)");
+  }
+}
+
+{
+  # croak on bad inputs
+  ok (! eval { prime_factors(-1); 1 });
+  require POSIX;
+  my $dbl_max = POSIX::DBL_MAX();
+  my $inf = 2 * $dbl_max;
+  ok (! eval { prime_factors($dbl_max); 1 });
+  ok (! eval { prime_factors($inf); 1 });
+  ok (! eval { prime_factors(- $dbl_max); 1 });
+  ok (! eval { prime_factors(- $inf); 1 });
 }

@@ -109,3 +109,40 @@ xs_matches (number, factors_aref, ...)
         }
 
       Safefree (prev_base);
+
+# no PROTOTYPE yet since might add a "distinct" option
+void
+prime_factors (number)
+      unsigned long number
+    INIT:
+     unsigned long i, limit;
+    PPCODE:
+      {
+        double d = SvNV(ST(0));
+        if (! (d >= 0 && d <= ULONG_MAX)) {
+          croak ("Cannot prime_factors() on %g", d);
+        }
+      }
+
+      if (number > 0) {
+        /* or perhaps __builtin_ctz() in new enough gcc */
+        while (! (number & 1)) {
+          mXPUSHu(2);
+          number >>= 1;
+        }
+
+        limit = sqrt (number);
+        for (i = 3; i <= limit; i += 2)
+          {
+            if (number % i == 0)
+              {
+                do {
+                  number /= i;
+                  mXPUSHu(i);
+                } while (number % i == 0);
+                limit = sqrt (number); /* new smaller limit */
+              }
+          }
+        if (number > 1)
+          mXPUSHu(number);
+      }

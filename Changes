@@ -1,5 +1,10 @@
 Revision history for Perl extension Math::Factor::XS.
 
+0.38_01  2011-12-28  <kryde@cpan.org>
+
+ - New prime_factors().
+ - Clarify docs of factors() that it's all divisors.
+
 0.38  2010-03-26  <schubiger@cpan.org>
 
  - Merged development version to stable.

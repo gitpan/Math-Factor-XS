@@ -12,8 +12,8 @@ use Scalar::Util qw(looks_like_number);
 
 our ($VERSION, @EXPORT_OK, %EXPORT_TAGS, @subs);
 
-$VERSION = '0.38';
-@subs = qw(factors matches);
+$VERSION = '0.38_01';
+@subs = qw(factors matches prime_factors);
 @EXPORT_OK = @subs;
 %EXPORT_TAGS = (all => [ @subs ]);
 
@@ -83,11 +83,12 @@ Math::Factor::XS - Factorize numbers and calculate matching multiplications
 
  use Math::Factor::XS ':all';
  # or
- use Math::Factor::XS qw(factors matches);
+ use Math::Factor::XS qw(factors prime_factors matches);
 
  $number = 30107;
 
  @factors = factors($number);
+ @primes = prime_factors($number);
  @matches = matches($number, \@factors);
 
  print "$factors[1]\n";
@@ -101,12 +102,27 @@ C<Math::Factor::XS> factorizes numbers by applying trial divisions.
 
 =head2 factors
 
-Factorizes numbers.
+Find all factors of a number.
 
  @factors = factors($number);
 
-The number will be entirely factorized and its factors will be returned
-as a list.
+The number is factorized and its factors, meaning all of its divisors, are
+returned as a list.  For example,
+
+ @factors = factors(30);
+ #  @factors = (2, 3, 5, 6, 10, 15);
+
+=head2 prime_factors
+
+Find prime factors of a number.
+
+ @factors = prime_factors($number);
+
+The number is factorized and its prime factors are returned as a list.
+Multiplying the list together gives C<$number>.  For example,
+
+ @primes = prime_factors(90);
+ #  @primes = (2, 3, 3, 5);
 
 =head2 matches
 
@@ -114,7 +130,7 @@ Calculates matching multiplications.
 
  @matches = matches($number, \@factors, { skip_multiples => [0|1] });
 
-The factors will be multiplicated against each other and all combinations
+The factors will be multiplied against each other and all combinations
 that equal the number itself will be returned as a two-dimensional list.
 The matches are accessible through the indexes; for example, the first
 two numbers that matched the number may be accessed by C<$matches[0][0]>
@@ -135,7 +151,7 @@ have an effect as it has been superseded by C<skip_multiples>.
 
 =head2 Functions
 
-C<factors(), matches()> are exportable.
+C<factors()>, C<matches()> and C<prime_factors()> are exportable.
 
 =head2 Tags
 
