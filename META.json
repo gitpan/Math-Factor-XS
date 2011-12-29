@@ -44,7 +44,7 @@
    "provides" : {
       "Math::Factor::XS" : {
          "file" : "lib/Math/Factor/XS.pm",
-         "version" : "0.38_01"
+         "version" : "0.38_02"
       }
    },
    "release_status" : "testing",
@@ -53,5 +53,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.38_01"
+   "version" : "0.38_02"
 }

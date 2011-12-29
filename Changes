@@ -1,5 +1,10 @@
 Revision history for Perl extension Math::Factor::XS.
 
+0.38_02  2011-12-30  <kryde@cpan.org>
+
+ - Use Perl's TRUE/FALSE to avoid trouble with enum{false,true} on
+   systems such as BSD which drag in stdbool.h
+
 0.38_01  2011-12-28  <kryde@cpan.org>
 
  - New prime_factors().

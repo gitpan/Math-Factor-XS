@@ -4,8 +4,6 @@
 
 #include "ppport.h"
 
-enum { false, true };
-
 MODULE = Math::Factor::XS               PACKAGE = Math::Factor::XS
 
 void
@@ -48,8 +46,8 @@ xs_matches (number, factors_aref, ...)
       unsigned long *prev_base = NULL;
       unsigned int b, c, p = 0;
       unsigned int top = items - 1;
-      bool Skip_multiples = false;
-      bool skip = false;
+      bool Skip_multiples = FALSE;
+      bool skip = FALSE;
     PPCODE:
       factors = (AV*)SvRV (factors_aref);
 
@@ -81,10 +79,10 @@ xs_matches (number, factors_aref, ...)
                   if (Skip_multiples)
                     {
                       unsigned int i;
-                      skip = false;
+                      skip = FALSE;
                       for (i = 0; i < p; i++)
                         if (base % prev_base[i] == 0)
-                          skip = true;
+                          skip = TRUE;
                     }
                   if (!skip)
                     {
