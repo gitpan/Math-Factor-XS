@@ -1,5 +1,9 @@
 Revision history for Perl extension Math::Factor::XS.
 
+0.38_03  2012-01-08  <kryde@cpan.org>
+
+ - prime_factors() step by 2,4 to skip multiples of 3
+
 0.38_02  2011-12-30  <kryde@cpan.org>
 
  - Use Perl's TRUE/FALSE to avoid trouble with enum{false,true} on

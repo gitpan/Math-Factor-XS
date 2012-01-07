@@ -114,6 +114,7 @@ prime_factors (number)
       unsigned long number
     INIT:
      unsigned long i, limit;
+     unsigned incr;
     PPCODE:
       {
         double d = SvNV(ST(0));
@@ -129,8 +130,16 @@ prime_factors (number)
           number >>= 1;
         }
 
+        while (! (number % 3)) {
+          mXPUSHu(3);
+          number /= 3;
+        }
+
+        /* "incr" is alternately 2 and 4, giving i==5mod6 and i==1mod6, so
+           skip multiples of 2 and multiples of 3 */
         limit = sqrt (number);
-        for (i = 3; i <= limit; i += 2)
+        incr = 2;
+        for (i = 5; i <= limit; i += incr, incr ^= 6)
           {
             if (number % i == 0)
               {
