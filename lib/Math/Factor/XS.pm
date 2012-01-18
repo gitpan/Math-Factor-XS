@@ -12,7 +12,7 @@ use Scalar::Util qw(looks_like_number);
 
 our ($VERSION, @EXPORT_OK, %EXPORT_TAGS, @subs);
 
-$VERSION = '0.38_03';
+$VERSION = '0.39';
 @subs = qw(factors matches prime_factors);
 @EXPORT_OK = @subs;
 %EXPORT_TAGS = (all => [ @subs ]);
@@ -102,12 +102,12 @@ C<Math::Factor::XS> factorizes numbers by applying trial divisions.
 
 =head2 factors
 
-Find all factors of a number.
+Find all factors (ie. divisors) of a number.
 
  @factors = factors($number);
 
-The number is factorized and its factors, meaning all of its divisors, are
-returned as a list.  For example,
+The number is factorized and its factors are returned as a list.  For
+example,
 
  @factors = factors(30);
  #  @factors = (2, 3, 5, 6, 10, 15);

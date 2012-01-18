@@ -4,7 +4,7 @@
       "Steven Schubiger <schubiger@cpan.org>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.112621",
+   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.113640",
    "license" : [
       "perl_5"
    ],
@@ -44,14 +44,14 @@
    "provides" : {
       "Math::Factor::XS" : {
          "file" : "lib/Math/Factor/XS.pm",
-         "version" : "0.38_03"
+         "version" : "0.39"
       }
    },
-   "release_status" : "testing",
+   "release_status" : "stable",
    "resources" : {
       "license" : [
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.38_03"
+   "version" : "0.39"
 }

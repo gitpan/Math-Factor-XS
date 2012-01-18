@@ -21,12 +21,12 @@ DESCRIPTION
 
 FUNCTIONS
   factors
-    Find all factors of a number.
+    Find all factors (ie. divisors) of a number.
 
      @factors = factors($number);
 
-    The number is factorized and its factors, meaning all of its divisors,
-    are returned as a list. For example,
+    The number is factorized and its factors are returned as a list. For
+    example,
 
      @factors = factors(30);
      #  @factors = (2, 3, 5, 6, 10, 15);

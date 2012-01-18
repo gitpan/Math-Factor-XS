@@ -1,5 +1,9 @@
 Revision history for Perl extension Math::Factor::XS.
 
+0.39  2012-01-19  <kryde@cpan.org>
+
+ - Stable release.
+
 0.38_03  2012-01-08  <kryde@cpan.org>
 
  - prime_factors() step by 2,4 to skip multiples of 3
