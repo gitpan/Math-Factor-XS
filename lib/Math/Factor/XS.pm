@@ -10,12 +10,10 @@ use List::MoreUtils qw(all);
 use Params::Validate ':all';
 use Scalar::Util qw(looks_like_number);
 
-our ($VERSION, @EXPORT_OK, %EXPORT_TAGS, @subs);
-
-$VERSION = '0.39';
-@subs = qw(factors matches prime_factors);
-@EXPORT_OK = @subs;
-%EXPORT_TAGS = (all => [ @subs ]);
+our ($VERSION, @EXPORT_OK, %EXPORT_TAGS);
+$VERSION = '0.39_01';
+@EXPORT_OK = qw(factors matches prime_factors count_prime_factors);
+%EXPORT_TAGS = (all => \@EXPORT_OK);
 
 validation_options(
     on_fail => sub
@@ -30,19 +28,6 @@ my $positive_nums = sub
     all { looks_like_number($_) && ($_ >= 0) }
       ref $_[0] ? @{$_[0]} : ($_[0]);
 };
-
-sub factors
-{
-    validate_pos(@_,
-        { type => SCALAR,
-          callbacks => {
-            'is a positive number' =>
-            $positive_nums,
-          },
-        },
-    );
-    return xs_factors(@_);
-}
 
 sub matches
 {
@@ -123,6 +108,13 @@ Multiplying the list together gives C<$number>.  For example,
 
  @primes = prime_factors(90);
  #  @primes = (2, 3, 3, 5);
+
+=head2 count_prime_factors
+
+Return the count of prime factors of a number.  This is the number of values
+returned by C<prime_factors()>.
+
+ my $count = count_prime_factors($number);
 
 =head2 matches
 

@@ -5,7 +5,7 @@ use warnings;
 use boolean qw(true);
 
 use Math::Factor::XS ':all';
-use Test::More tests => 32;
+use Test::More tests => 68;
 
 {
     my $number = 30107;
@@ -47,6 +47,38 @@ use Test::More tests => 32;
 
     ok(!@matches, "matches($number) - no factors provided");
 }
+
+{
+  # factors() croak on bad inputs
+  ok (! eval { factors(-1); 1 },         "factors(-1)");
+  require POSIX;
+  my $dbl_max = POSIX::DBL_MAX();
+  my $inf = 2 * $dbl_max;
+  ok (! eval { factors($dbl_max); 1 },   "factors(DBL_MAX)");
+  ok (! eval { factors($inf); 1 },       "factors(+infinity)");
+  ok (! eval { factors(- $dbl_max); 1 }, "factors(-DBL_MAX)");
+  ok (! eval { factors(- $inf); 1 },     "factors(-infinity)");
+}
+
+{
+  # factors() return values weaken away
+  require Scalar::Util;
+  my @refs = map {\$_} factors(2*5*7);
+  foreach my $ref (@refs) {
+    Scalar::Util::weaken($ref);
+    is ($ref, undef, 'factors() return values weaken away');
+  }
+}
+
+{
+  # factors() on Math::BigInt
+  require Math::BigInt;
+  my $big = Math::BigInt->new(30);
+  my @primes = factors($big);
+  my $primes = join(',',@primes);
+  is ($primes, '2,3,5,6,10,15', 'factors() on Math::BigInt');
+}
+
 
 #------------------------------------------------------------------------------
 # prime_factors()
@@ -93,20 +125,64 @@ foreach my $elem ([ 0, '' ],
 }
 
 {
-  # croak on bad inputs
-  ok (! eval { prime_factors(-1); 1 },
-     "prime_factors(-1)");
+  # prime_factors() croak on bad inputs
+  ok (! eval { prime_factors(-1); 1 },         "prime_factors(-1)");
   require POSIX;
   my $dbl_max = POSIX::DBL_MAX();
   my $inf = 2 * $dbl_max;
-  ok (! eval { prime_factors($dbl_max); 1 },
-     "prime_factors(DBL_MAX)");
-  ok (! eval { prime_factors($inf); 1 },
-     "prime_factors(+infinity)");
-  ok (! eval { prime_factors(- $dbl_max); 1 },
-     "prime_factors(-DBL_MAX)");
-  ok (! eval { prime_factors(- $inf); 1 },
-     "prime_factors(-infinity)");
+  ok (! eval { prime_factors($dbl_max); 1 },   "prime_factors(DBL_MAX)");
+  ok (! eval { prime_factors($inf); 1 },       "prime_factors(+infinity)");
+  ok (! eval { prime_factors(- $dbl_max); 1 }, "prime_factors(-DBL_MAX)");
+  ok (! eval { prime_factors(- $inf); 1 },     "prime_factors(-infinity)");
+}
+
+{
+  # prime_factors() return values weaken away
+  require Scalar::Util;
+  my @refs = map {\$_} prime_factors(2*2*3*3*5*5);
+  foreach my $ref (@refs) {
+    Scalar::Util::weaken($ref);
+    is ($ref, undef, 'prime_factors() return values weaken away');
+  }
+}
+
+{
+  # prime_factors() on Math::BigInt
+  require Math::BigInt;
+  my $big = Math::BigInt->new(120);
+  my @primes = prime_factors($big);
+  my $primes = join(',',@primes);
+  is ($primes, '2,2,2,3,5', 'prime_factors() on Math::BigInt');
+}
+
+#------------------------------------------------------------------------------
+# count_prime_factors()
+
+foreach my $elem ([ 0, 0 ],
+                  [ 1, 0 ],
+                  [ 2, 1 ],  # 2
+                  [ 3, 1 ],  # 3
+                  [ 4, 2 ],  # 2,2
+                  [ 5, 1 ],  # 5
+                  [ 6, 2 ],  # 2,3
+                  [ 12, 3 ], # 2,2,3
+                  [ 64, 6 ], # 2,2,2,2,2,2
+                  [ 9, 2 ],  # 3,3
+                  [ 27, 3 ], # 3,3,3
+                  [ 30, 3 ], # 2,3,5
+                  [ 34, 2 ], # 2,17
+                  [ 57, 2 ], # 3,19
+
+                  # medium size input, loop to sqrt(57128471)=7558
+                  [ 114_256_942, 2 ], # 2, 57128471
+
+                  [ 105, 3 ], # 3,5,7
+                  [ 2214143, 2 ], # 1487, 1489'
+                 ) {
+  my ($number, $want) = @$elem;
+  ### count: count_prime_factors($number)
+  my $got = count_prime_factors($number);
+  is ($got, $want, "count_prime_factors($number)");
 }
 
 #------------------------------------------------------------------------------

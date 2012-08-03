@@ -1,5 +1,11 @@
 Revision history for Perl extension Math::Factor::XS.
 
+0.39_01  2012-08-01  <kryde@cpan.org>
+
+ - factors() range check just with SvNV, so as to accept overloaded
+   types such as Math::BigInt (if fit ulong) and for big speedup.
+ - New count_prime_factors().
+
 0.39  2012-01-19  <kryde@cpan.org>
 
  - Stable release.

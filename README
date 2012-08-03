@@ -42,6 +42,12 @@ FUNCTIONS
      @primes = prime_factors(90);
      #  @primes = (2, 3, 3, 5);
 
+  count_prime_factors
+    Return the count of prime factors of a number. This is the number of
+    values returned by "prime_factors()".
+
+     my $count = count_prime_factors($number);
+
   matches
     Calculates matching multiplications.
 

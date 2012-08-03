@@ -2,19 +2,44 @@
 #include "perl.h"
 #include "XSUB.h"
 
+#define NEED_newRV_noinc_GLOBAL
 #include "ppport.h"
+
+/* double_ulong_max_plus_1 is ULONG_MAX+1.  This is usually a power of 2 and
+   thus can be represented exactly in a double.  The calculation avoids
+   round-off if ulong is bigger than the mantissa of a double.  */
+static const double double_ulong_max_plus_1
+  = ((double) ((ULONG_MAX >> 1)+1)) * 2.0;
+
+#define COUNT_OR_PUSH(prime)                            \
+  do {                                                  \
+    if (ix) {                                           \
+      count++;         /* count_prime_factors() */      \
+    } else {                                            \
+      mXPUSHu(prime);  /* prime_factors() */            \
+    }                                                   \
+  } while (0)
 
 MODULE = Math::Factor::XS               PACKAGE = Math::Factor::XS
 
 void
-xs_factors (number)
+factors (number)
       unsigned long number
     PROTOTYPE: $
     INIT:
-      unsigned long i;
+      unsigned long i, square_root;
+      AV *factors;
     PPCODE:
-      AV *factors = newAV ();
-      unsigned long square_root = sqrt (number);
+      /* range check */
+      {
+        double d = SvNV(ST(0));
+        if (! (d >= 0 && d < double_ulong_max_plus_1)) {
+          croak ("Cannot factors() on %g", d);
+        }
+      }
+
+      factors = newAV ();
+      square_root = sqrt (number);
 
       for (i = 2; i <= number; i++)
         {
@@ -22,17 +47,17 @@ xs_factors (number)
             break;
           if (number % i == 0)
             {
-              EXTEND (SP, 1);
-              PUSHs (sv_2mortal(newSVuv(i)));
-              if ((number / i) > i)
-                av_push (factors, newSVuv(number / i));
+              unsigned long quot = number / i;
+              mXPUSHu(i);
+              if (quot > i)
+                av_push (factors, newSVuv(quot));
             }
         }
-      while (av_len (factors) >= 0)
-        {
-          EXTEND (SP, 1);
-          PUSHs (sv_2mortal(av_pop(factors)));
-        }
+
+      i = av_len(factors) + 1;
+      EXTEND (SP, i);
+      while (i--)
+        PUSHs (sv_2mortal(av_pop(factors)));
 
       SvREFCNT_dec (factors);
 
@@ -108,30 +133,40 @@ xs_matches (number, factors_aref, ...)
 
       Safefree (prev_base);
 
-# no PROTOTYPE yet since might add a "distinct" option
+# prime_factors() and count_prime_factors() done in a combined XSUB so
+# as to use the share the factorizing loop and to save a few bytes of
+# object code by sharing the boilerplate sub entry and exit.
+#
+# No PROTOTYPE since might add a "distinct" option.
+#
 void
 prime_factors (number)
       unsigned long number
+    ALIAS:
+     count_prime_factors = 1
     INIT:
      unsigned long i, limit;
      unsigned incr;
+     unsigned long count = 0;
     PPCODE:
+      /* range check */
       {
         double d = SvNV(ST(0));
-        if (! (d >= 0 && d <= ULONG_MAX)) {
+        if (! (d >= 0 && d < double_ulong_max_plus_1)) {
           croak ("Cannot prime_factors() on %g", d);
         }
       }
 
       if (number > 0) {
-        /* or perhaps __builtin_ctz() in new enough gcc */
+        /* or perhaps __builtin_ctz() in new enough gcc, but usually there
+           won't be many twos */
         while (! (number & 1)) {
-          mXPUSHu(2);
+          COUNT_OR_PUSH(2);
           number >>= 1;
         }
 
         while (! (number % 3)) {
-          mXPUSHu(3);
+          COUNT_OR_PUSH(3);
           number /= 3;
         }
 
@@ -145,11 +180,20 @@ prime_factors (number)
               {
                 do {
                   number /= i;
-                  mXPUSHu(i);
+                  COUNT_OR_PUSH(i);
                 } while (number % i == 0);
                 limit = sqrt (number); /* new smaller limit */
               }
           }
-        if (number > 1)
-          mXPUSHu(number);
+      }
+
+      if (ix) {
+        /* count_prime_factors() */
+        count += (number > 1);  /* possible prime left in number */
+        mXPUSHu(count);
+      } else {
+        /* prime_factors() */
+        if (number > 1) {
+          mXPUSHu(number);  /* possible prime left in number */
+        }
       }
