@@ -11,7 +11,7 @@ use Params::Validate ':all';
 use Scalar::Util qw(looks_like_number);
 
 our ($VERSION, @EXPORT_OK, %EXPORT_TAGS);
-$VERSION = '0.39_01';
+$VERSION = '0.40';
 @EXPORT_OK = qw(factors matches prime_factors count_prime_factors);
 %EXPORT_TAGS = (all => \@EXPORT_OK);
 

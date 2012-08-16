@@ -44,14 +44,14 @@
    "provides" : {
       "Math::Factor::XS" : {
          "file" : "lib/Math/Factor/XS.pm",
-         "version" : "0.39_01"
+         "version" : "0.40"
       }
    },
-   "release_status" : "testing",
+   "release_status" : "stable",
    "resources" : {
       "license" : [
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.39_01"
+   "version" : "0.40"
 }

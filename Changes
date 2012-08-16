@@ -1,5 +1,9 @@
 Revision history for Perl extension Math::Factor::XS.
 
+0.40  2012-08-14  <kryde@cpan.org>
+
+ - Stable release.
+
 0.39_01  2012-08-01  <kryde@cpan.org>
 
  - factors() range check just with SvNV, so as to accept overloaded
